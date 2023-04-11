@@ -1,9 +1,11 @@
 """
-Phase 1 extraction des information sur un livre
+Step 1 : scraper des informations sur un livre
 """
+
 import requests
 from bs4 import BeautifulSoup
 import csv
+
 
 def scrape_book_data(url):
     response = requests.get(url)
@@ -60,17 +62,17 @@ def get_category(soup):
 def get_review_rating(soup):
     rating_classes = ["One", "Two", "Three", "Four", "Five"]
     for rating_class in rating_classes:
-        if soup.select_one(".product_page .star-rating")["class"][1] is not None:
+        if soup.select_one(".product_page .star-rating." + rating_class) is not None:
             return rating_class
-    
+    return None
+
 def get_image_url(soup):
     image_url = soup.select_one(".carousel-inner img")["src"]
     return image_url
 
-# Fonction pour suavegarder les information produit dans un fichier csv
 def save_to_csv(book_data):
     
-    fieldsName = [
+    fieldnames = [
         "Product page url",
         "Universal product code (upc)",
         "Title",
@@ -80,14 +82,18 @@ def save_to_csv(book_data):
         "Product description",
         "Category",
         "Review rating",
-        "Image url"
+        "Image url\n"
     ]
 
     with open("book_data.csv", "w", newline="", encoding="utf-8") as csv_file:
-        writer = csv.DictWriter(csv_file, fieldnames=fieldsName)
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerow(book_data)
+        for book in book_data:
+            writer.writerow(dict(zip(fieldnames, book)))
 
-book_data = scrape_book_data('http://books.toscrape.com/catalogue/birdsong-a-story-in-pictures_975/index.html')
-save_to_csv(book_data)
-print(book_data)
+def step1():
+    book_data = scrape_book_data("http://books.toscrape.com/catalogue/birdsong-a-story-in-pictures_975/index.html")
+    save_to_csv([book_data])
+    print
+
+step1()
