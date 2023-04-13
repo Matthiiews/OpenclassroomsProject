@@ -5,7 +5,8 @@ Step 1 : scraper des informations sur un livre
 import requests
 from bs4 import BeautifulSoup
 import csv
-
+import time
+import os
 
 def scrape_book_data(url):
     response = requests.get(url)
@@ -102,11 +103,6 @@ step1()
 Step 2  Scrape de l'URL de la page Produit de chaque livre appartenant à cette catégorie.
 """
 
-import requests
-from bs4 import BeautifulSoup
-import csv
-import time
-
 def get_product_links(url):
     response = requests.get(url)
     if response.status_code == 200:
@@ -159,11 +155,6 @@ step2()
 """
 Step 3 extraction de toutes les catégories de livres disponibles
 """
-
-import requests
-import csv
-import time
-from bs4 import BeautifulSoup
 
 BASE_URL = 'http://books.toscrape.com/'
 
@@ -218,12 +209,6 @@ if __name__ == '__main__':
 """
 Step 4 télécharger et enregistrer les fichiers images de chaque page Produit
 """
-
-import requests
-import csv
-import time
-from bs4 import BeautifulSoup
-import os
 
 # Créer un dossier pour stocker les images
 if not os.path.exists('images'):
