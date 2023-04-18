@@ -46,4 +46,4 @@ for link in product_links:
             print(f'Saved image: {img_path}')
     except Exception as e:
         print(f"Error downloading image from {link}: {e}")
-    time.sleep(2) # pause de 2 secondes entre chaque requête
+    time.sleep(0.5) # pause de 2 secondes entre chaque requête

@@ -6,6 +6,11 @@ import requests
 import csv
 import time
 from bs4 import BeautifulSoup
+import os
+
+# Créer un dossier pour stocker les fichiers CSV
+if not os.path.exists(r"d:\Profiles\kouas\Documents\Openclassrooms\data"):
+    os.makedirs(r"d:\Profiles\kouas\Documents\Openclassrooms\data")
 
 BASE_URL = 'http://books.toscrape.com/'
 
@@ -37,7 +42,7 @@ def extract_book_data(category_url):
     return book_data
 
 def write_to_csv(category_name, book_data):
-    with open(f'{category_name}.csv', 'a', newline='', encoding='utf-8') as csv_file:
+    with open(f"d:\\Profiles\\kouas\\Documents\\Openclassrooms\\data\\{category_name}.csv", 'a', newline='', encoding='utf-8') as csv_file:
         writer = csv.writer(csv_file)
         writer.writerow(['Title', 'URL', 'Price', 'Availability', 'Rating'])
         writer.writerows(book_data)
@@ -47,7 +52,7 @@ def scrape_books_from_category(category_url):
     category_name = category_url.split('/')[-2]
     write_to_csv(category_name, book_data)
     print(f"Les informations ont été extraites pour la catégorie '{category_name}'.")
-    time.sleep(1)
+    time.sleep(0.5)
 
 def step3():
     category_urls = extract_categories()
